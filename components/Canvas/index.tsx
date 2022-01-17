@@ -2,11 +2,10 @@ import dynamic from "next/dynamic";
 import p5Types from "p5";
 
 
-
 const Sketch = dynamic(
   () =>
     import("react-p5").then((mod) => {
-      require("p5/lib/addons/p5.sound");
+      import("p5/lib/addons/p5.sound");
       return mod.default;
     }),
   {
@@ -14,33 +13,44 @@ const Sketch = dynamic(
   }
 );
 
-let width: number = 500;
-let height: number = 500;
-let x: number = 1;
-let y: number = height / 2;
-let velX: number = 5;
-let velY: number = 3;
-let strokeColor: number = 0;
-let fillColor: number = 255;
+let theta : number;
+let width: number = 710;
+let height: number = 400;
+let branch: any;
 
 export default () => {
-	
-  const setup = (p5: p5Types, canvasParentRef: Element) => {
+  
+    const setup = (p5: p5Types, canvasParentRef: Element) => {
     p5.createCanvas(width, height).parent(canvasParentRef);
+    branch = function (h : number) {
+      h *= 0.66;
+      if (h > 2) {
+        p5.push();
+        p5.rotate(theta);   
+        p5.line(0, 0, 0, -h); 
+        p5.translate(0, -h);
+        branch(h);      
+        p5.pop();
+        p5.push();
+        p5.rotate(-theta);
+        p5.line(0, 0, 0, -h);
+        p5.translate(0, -h);
+        branch(h);
+        p5.pop();
+      }
+    }
   };
 
   const draw = (p5: p5Types) => {
-	p5.fill(fillColor, 50);
-	p5.stroke(strokeColor)
-	p5.ellipse(x, y, 70, 70);
-    if (x >= width || x <= 0 ) {
-		velX = -velX;
-	}
-	if (y >= height || y <= 0 ) {
-		velY = -velY;
-	}
-	x = x + velX;
-	y = y + velY;
+    p5.background(0);
+    p5.frameRate(30);
+    p5.stroke(255);
+    let a : number = (p5.mouseX / width) * 90;
+    theta = p5.radians(a);
+    p5.translate(width/2,height);
+    p5.line(0,0,0,-120);
+    p5.translate(0,-120);
+    branch(120);
   };
 
   return <Sketch setup={setup} draw={draw} />;

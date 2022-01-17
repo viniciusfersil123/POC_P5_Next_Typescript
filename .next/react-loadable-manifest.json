@@ -1,4 +1,10 @@
 {
+  "../components/Canvas/index.tsx -> p5/lib/addons/p5.sound": {
+    "id": "../components/Canvas/index.tsx -> p5/lib/addons/p5.sound",
+    "files": [
+      "static/chunks/node_modules_p5_lib_addons_p5_sound_js.js"
+    ]
+  },
   "../components/Canvas/index.tsx -> react-p5": {
     "id": "../components/Canvas/index.tsx -> react-p5",
     "files": [
